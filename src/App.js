@@ -36,15 +36,22 @@ function getWeatherIcon(wmoCode) {
 
 class App extends React.Component{
     state = {
-        location:"West Kelowna",
+        location:"",
         isLoading:false,
-        displayLocation:'',
+        displayLocation:"",
         weather:{},
+        error:"",
     };
 
     fetchWeather = async () => {
+        if(this.state.location.length < 2){
+          this.setState({displayLocation:"", weather:{}})
+        }
+        
         try {
+            this.setState({error:""});
             this.setState({isLoading:true})
+
             // 1) Getting location (geocoding)
             const geoRes = await fetch(
               `https://geocoding-api.open-meteo.com/v1/search?name=${this.state.location}`
@@ -66,9 +73,10 @@ class App extends React.Component{
             const weatherData = await weatherRes.json();
             this.setState({weather:weatherData.daily});
           } catch (err) {
-            console.error(err);
+              console.error(err)
+              this.setState({error:err.message})
           } finally {
-            this.setState({isLoading:false});
+             this.setState({isLoading:false});
           }
     }
 
@@ -77,7 +85,9 @@ class App extends React.Component{
     /****************************************  3:36  ***************************************************/
     // useEffect []
     componentDidMount(){
-        this.fetchWeather();
+        // this.fetchWeather();
+
+        this.setState({location:localStorage.getItem('location') || ""})
     }
 
     // gives acces to the previous methods, and previous props.And this method called on re-renders
@@ -85,20 +95,20 @@ class App extends React.Component{
     componentDidUpdate(prevProps, prevSate){
         if(this.state.location !== prevSate.location){
             this.fetchWeather();
+            localStorage.setItem('location', this.state.location);
         }
     }
+
     /*******************************************************************************************/
 
     render(){
         return <div className="app">
               <h1>Classy Weather</h1>
                 <Input location = {this.state.location} onChangeLocation = {this.setLocation} /> 
-              <button onClick={this.fetchWeather}>
-                Get Weather
-              </button>
 
               {this.state.isLoading && <p className = "loader">Loading...</p> }
-              {this.state.weather.weathercode && <Weather weather = {this.state.weather} location = {this.state.displayLocation}/> }
+              {!this.state.isLoading && this.state.error && <ErrorMessage message = {this.state.error} />}
+              {this.state.weather.weathercode && !this.state.error && !this.state.isLoading && <Weather weather={this.state.weather} location={this.state.displayLocation} />}
         </div>
     }
 }
@@ -108,6 +118,7 @@ export default App;
 
 
 class Weather extends React.Component{
+
     render(){
         const {
             temperature_2m_max: max,  
@@ -159,4 +170,10 @@ class Input extends React.Component{
         /> 
     </div> 
     }
+}
+
+class ErrorMessage extends React.Component{
+  render(){
+    return <p>{this.props.message}</p>
+  }
 }
