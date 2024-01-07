@@ -116,7 +116,16 @@ input {
   font-weight: 700;
 }
 
+@media (max-width:95em){
+  html{
+    font-size: 50%;
+  }
+}
+
 @media (max-width:77em){
+  html{
+    font-size: 45%;
+  }
   .app{
     border: none;
     outline: none;
@@ -150,7 +159,7 @@ input {
 
 @media (max-width:50em) {
   html{
-    font-size: 55%;
+    font-size: 40%;
   }
 
   h1{
