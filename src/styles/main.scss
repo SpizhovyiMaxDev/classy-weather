@@ -1,3 +1,5 @@
+@import "variables";
+
 @import url("https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&display=swap");
 
 * {
@@ -13,23 +15,24 @@ html {
 body {
   font-family: "Cinzel Decorative", cursive;
   font-size: 2rem;
-  height: 100vh;
-  color: #222;
-  background-color: #eabfb9;
+  min-height: 100vh;
+  color: $primary-color;
+  background-color: $background-color;
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow-x: hidden;
 }
 
 .app {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 112rem;
+  max-width: 112rem;
   gap: 4rem;
-  padding: 6rem 0;
-  border: 2px solid #222;
-  outline: 2px solid #222;
+  padding: 2rem;
+  border: 2px solid $primary-color;
+  outline: 2px solid $primary-color;
   outline-offset: 1.2rem;
 }
 
@@ -49,41 +52,63 @@ input {
   font-family: inherit;
   color: inherit;
   font-size: 2rem;
-  background-color: #f0d2ce;
+  background-color: $input-background-color;
   padding: 1.6rem 3.2rem;
   border: none;
   width: 32rem;
-}
 
-input:focus {
-  outline: 2px solid #222;
+  &:focus {
+    outline: 2px solid $primary-color;
+  }
 }
 
 .weather {
   list-style: none;
   display: flex;
+  justify-content: center;
   gap: 2.4rem;
 }
 
+.day-tab {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8rem;
+  margin: 2rem 0;
+  background-color: $input-background-color;
+}
+
+.day-tab-content {
+  line-height: 2;
+  padding: 2rem;
+
+  span {
+    font-weight: 600;
+  }
+
+  ul {
+    margin-left: 2rem;
+  }
+}
+
 .day {
-  background-color: #f0d2ce;
+  background-color: $input-background-color;
   padding: 1.6rem 0 2rem;
   width: 12.8rem;
-
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1.2rem;
   cursor: pointer;
-}
 
-.day span {
-  font-size: 5.2rem;
+  span {
+    font-size: 5.2rem;
+  }
 }
 
 .day.important {
-  background-color: #ecc5c0;
-  outline: 2px solid #222;
+  background-color: $accent-color;
+  outline: 2px solid $primary-color;
 }
 
 .loader {
